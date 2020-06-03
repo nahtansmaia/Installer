@@ -5,7 +5,7 @@ interface
 uses
   System.Net.HttpClientComponent, System.Classes, System.SysUtils, FMX.Dialogs,
   System.Notification, Winapi.ShellAPI, Winapi.Windows, System.Net.HttpClient,
-  FMX.Forms;
+  FMX.Forms, Winapi.ShlObj, Winapi.ActiveX, System.Win.ComObj, Registry;
 
 type
   TDownload = class
@@ -18,7 +18,8 @@ type
     procedure Notificacao(sName, sTitle, sbody: string);
     procedure NotificationCenterReceiveLocalNotification(Sender: TObject;
       ANotification: TNotification);
-    procedure instalar;
+    procedure Instalar;
+    procedure CriarAtalho;
   end;
 
 implementation
@@ -30,6 +31,36 @@ begin
   NotificationCenter := TNotificationCenter.Create(nil);
   NotificationCenter.OnReceiveLocalNotification :=
     NotificationCenterReceiveLocalNotification;
+end;
+
+procedure TDownload.CriarAtalho;
+var
+  MyObject: IUnknown;
+  MySLink: IShellLink;
+  MyPFile: IPersistFile;
+  Directory: String;
+  FileName: String;
+  InitialDir: String;
+  ShortcutName: String;
+  Parameters: PWideChar;
+  WFileName: WideString;
+  MyReg: TRegIniFile;
+begin
+  MyObject := CreateComObject(CLSID_ShellLink);
+  MySLink := MyObject as IShellLink;
+  MyPFile := MyObject as IPersistFile;
+  with MySLink do
+  begin
+    SetArguments('Elegance');
+    SetPath(PChar('C:\Elegance\Elegance.exe'));
+    SetWorkingDirectory(PChar('C:\Elegance\Elegance.exe'));
+  end;
+  MyReg := TRegIniFile.Create
+    ('Software\\MicroSoft\\Windows\\CurrentVersion\\Explorer');
+  Directory := MyReg.ReadString('Shell Folders', 'Desktop', '');
+  WFileName := Directory + '\\' + 'Elegance' + '.lnk';
+  MyPFile.Save(PWChar(WFileName), False);
+  MyReg.Free;
 end;
 
 destructor TDownload.Destroy;
@@ -63,13 +94,14 @@ begin
     end).Start;
 end;
 
-procedure TDownload.instalar;
+procedure TDownload.Instalar;
 begin
   RenameFile('C:\Elegance\Elegance.exe', 'C:\Elegance\Elegance_Old.exe');
   if RenameFile('C:\Elegance\Elegance_new.exe', 'C:\Elegance\Elegance.exe') then
     deletefile('C:\Elegance\Elegance_Old.exe');
-  ShellExecute(0, nil, Pchar('C:\Elegance\Elegance.exe'), '', nil,
+  ShellExecute(0, nil, PChar('C:\Elegance\Elegance.exe'), '', nil,
     SW_SHOWNORMAL);
+  CriarAtalho;
   Application.terminate;
 end;
 
@@ -96,7 +128,7 @@ ANotification: TNotification);
 begin
   if ANotification.Name = 'update' then
   Begin
-    instalar;
+    Instalar;
   End;
 end;
 
