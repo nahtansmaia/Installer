@@ -4,7 +4,8 @@ interface
 
 uses
   System.Net.HttpClientComponent, System.Classes, System.SysUtils, FMX.Dialogs,
-  System.Notification, Winapi.ShellAPI, Winapi.Windows, System.Net.HttpClient;
+  System.Notification, Winapi.ShellAPI, Winapi.Windows, System.Net.HttpClient,
+  FMX.Forms;
 
 type
   TDownload = class
@@ -13,10 +14,11 @@ type
   private
     NotificationCenter: TNotificationCenter;
   public
-    procedure Download(NetHTTPClient: TNetHTTPClient;sURL, sFile: String);
+    procedure Download(NetHTTPClient: TNetHTTPClient; sURL, sFile: String);
     procedure Notificacao(sName, sTitle, sbody: string);
     procedure NotificationCenterReceiveLocalNotification(Sender: TObject;
       ANotification: TNotification);
+    procedure instalar;
   end;
 
 implementation
@@ -36,7 +38,8 @@ begin
   inherited;
 end;
 
-procedure TDownload.Download(NetHTTPClient: TNetHTTPClient; sURL, sFile: String);
+procedure TDownload.Download(NetHTTPClient: TNetHTTPClient;
+  sURL, sFile: String);
 var
   lFile: TFileStream;
 begin
@@ -58,6 +61,16 @@ begin
             'Clique aqui para instalar agora');
         end);
     end).Start;
+end;
+
+procedure TDownload.instalar;
+begin
+  RenameFile('C:\Elegance\Elegance.exe', 'C:\Elegance\Elegance_Old.exe');
+  if RenameFile('C:\Elegance\Elegance_new.exe', 'C:\Elegance\Elegance.exe') then
+    deletefile('C:\Elegance\Elegance_Old.exe');
+  ShellExecute(0, nil, Pchar('C:\Elegance\Elegance.exe'), '', nil,
+    SW_SHOWNORMAL);
+  Application.terminate;
 end;
 
 procedure TDownload.Notificacao(sName, sTitle, sbody: string);
@@ -83,11 +96,7 @@ ANotification: TNotification);
 begin
   if ANotification.Name = 'update' then
   Begin
-    RenameFile('C:\Elegance\Elegance.exe', 'C:\Elegance\Elegance_Old.exe');
-    RenameFile('C:\Elegance\Elegance_new.exe', 'C:\Elegance\Elegance.exe');
-
-    ShellExecute(0, nil, Pchar('C:\Elegance\Elegance.exe'), '', nil,
-      SW_SHOWNORMAL);
+    instalar;
   End;
 end;
 
