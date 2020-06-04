@@ -13,18 +13,28 @@ type
     destructor Destroy; override;
   private
     NotificationCenter: TNotificationCenter;
+    procedure CriarAtalho;
+    procedure CopiarInstaller;
   public
     procedure Download(NetHTTPClient: TNetHTTPClient; sURL, sFile: String);
     procedure Notificacao(sName, sTitle, sbody: string);
     procedure NotificationCenterReceiveLocalNotification(Sender: TObject;
       ANotification: TNotification);
     procedure Instalar;
-    procedure CriarAtalho;
+    function GetBuildInfo(Prog: string): string;
   end;
 
 implementation
 
 { TDownload }
+
+procedure TDownload.CopiarInstaller;
+var
+  lCaminho: String;
+begin
+  lCaminho := GetCurrentDir + '\Installer.exe';
+  CopyFile(PWideChar(lCaminho), 'C:\Elegance\Installer.exe', True)
+end;
 
 constructor TDownload.Create;
 begin
@@ -96,13 +106,26 @@ end;
 
 procedure TDownload.Instalar;
 begin
-  RenameFile('C:\Elegance\Elegance.exe', 'C:\Elegance\Elegance_Old.exe');
-  if RenameFile('C:\Elegance\Elegance_new.exe', 'C:\Elegance\Elegance.exe') then
-    deletefile('C:\Elegance\Elegance_Old.exe');
-  ShellExecute(0, nil, PChar('C:\Elegance\Elegance.exe'), '', nil,
-    SW_SHOWNORMAL);
-  CriarAtalho;
-  Application.terminate;
+  TThread.CreateAnonymousThread(
+    procedure()
+    begin
+      RenameFile('C:\Elegance\Elegance.exe', 'C:\Elegance\Elegance_Old.exe');
+      if RenameFile('C:\Elegance\Elegance_new.exe', 'C:\Elegance\Elegance.exe')
+      then
+      Begin
+        deletefile('C:\Elegance\Elegance_Old.exe');
+        ShellExecute(0, nil, PChar('C:\Elegance\Elegance.exe'), '', nil,
+          SW_SHOWNORMAL);
+        CriarAtalho;
+        CopiarInstaller;
+      End;
+
+      TThread.Synchronize(TThread.CurrentThread,
+        procedure()
+        Begin
+          Application.terminate;
+        end);
+    end).Start;
 end;
 
 procedure TDownload.Notificacao(sName, sTitle, sbody: string);
@@ -130,6 +153,34 @@ begin
   Begin
     Instalar;
   End;
+end;
+
+function TDownload.GetBuildInfo(Prog: string): string;
+var
+ VerInfoSize: DWORD;
+ VerInfo: Pointer;
+ VerValueSize: DWORD;
+ VerValue: PVSFixedFileInfo;
+ Dummy: DWORD;
+ V1, V2, V3, V4: Word;
+begin
+ try
+   VerInfoSize := GetFileVersionInfoSize(PChar(Prog), Dummy);
+   GetMem(VerInfo, VerInfoSize);
+   GetFileVersionInfo(PChar(prog), 0, VerInfoSize, VerInfo);
+   VerQueryValue(VerInfo, '', Pointer(VerValue), VerValueSize);
+   with (VerValue^) do
+   begin
+     V1 := dwFileVersionMS shr 16;
+     V2 := dwFileVersionMS and $FFFF;
+     V3 := dwFileVersionLS shr 16;
+     V4 := dwFileVersionLS and $FFFF;
+   end;
+   FreeMem(VerInfo, VerInfoSize);
+   Result := Format('%d.%d.%d.%d', [v1, v2, v3, v4]);
+ except
+   Result := '1.0.0';
+ end;
 end;
 
 end.
