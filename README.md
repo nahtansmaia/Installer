@@ -55,5 +55,8 @@ Gostaria de sugerir alguma melhoria? Entre em contato [clicando aqui](https://ww
 
 
 ### Download
-Para download do **Installer**  [Clique aqui](https://firebasestorage.googleapis.com/v0/b/elegance-software.appspot.com/o/Instalador_Installer%2FInstaller.exe?alt=media&token=7e685d95-7c73-4c82-9555-9369c7bcfd9e), o *Installer* é responsável pelo gerenciamento de atualizações do **Elegance**. Através dele é possível realizar instalações e atualizações de forma simples e rápida.<br>
-[<img src="https://static-exp1.licdn.com/scds/common/u/images/logos/linkedin/logo_linkedin_93x21_v2.png">](https://www.linkedin.com/in/nathan-maia-2444321b0/) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[<img src="https://raw.githubusercontent.com/nahtansmaia/Installer/master/img/LogoElegance_44.ico">](https://firebasestorage.googleapis.com/v0/b/elegance-software.appspot.com/o/Instalador_Installer%2FInstaller.exe?alt=media&token=7e685d95-7c73-4c82-9555-9369c7bcfd9e)
+Para download do **Installer**  [Clique aqui](https://firebasestorage.googleapis.com/v0/b/elegance-software.appspot.com/o/Instalador_Installer%2FInstaller.exe?alt=media&token=7e685d95-7c73-4c82-9555-9369c7bcfd9e), o *Installer* é responsável pelo gerenciamento de atualizações do **Elegance**. Através dele é possível realizar instalações e atualizações de forma simples e rápida.
+<br>
+<center><b>Contato</center> 
+
+[<img src="https://static-exp1.licdn.com/scds/common/u/images/logos/linkedin/logo_linkedin_93x21_v2.png">](https://www.linkedin.com/in/nathan-maia-2444321b0/)
