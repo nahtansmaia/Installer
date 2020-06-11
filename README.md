@@ -42,6 +42,7 @@ Sabemos que cada empresa possui sua própria regras de negócios e dessa forma o
 > 1. Sempre que disponível uma nova versão, será informado através do sistema.
 > 1. Busque o endereço completo apenas com o CEP do cliente.
 > 1. Dados cadastrais de pessoa jurídica apenas com o CNPJ.
+> 1. Cadastro de clientes, produtos e funcionários.
 
 **Nota:** Sistema ainda em *desenvolvimento*. Veja o que vem por aí... 
 >* Controle de metas e comissões.
