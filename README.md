@@ -2,6 +2,8 @@
 
 Sistema de automação desenvolvido em **FMX**. Desenvolvido para salões de beleza, o Elegance possui uma interface simples e intuitiva, dispensando conhecimento técnico na utilização. 
 
+![](https://github.com/nahtansmaia/Elegance/blob/master/img/Elegance.gif)
+
 Confira abaixo suas principais funcionalidades: 
 
 ### Dashboard
