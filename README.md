@@ -61,4 +61,4 @@ Para download do **Installer**  [Clique aqui](https://firebasestorage.googleapis
 
 ### Contato
 
-[<img src="https://static-exp1.licdn.com/scds/common/u/images/logos/linkedin/logo_linkedin_93x21_v2.png">](https://www.linkedin.com/in/nathan-maia-2444321b0/)
+[<img src="https://static-exp1.licdn.com/scds/common/u/images/logos/linkedin/logo_linkedin_93x21_v2.png">](https://www.linkedin.com/in/nathanmaia)
